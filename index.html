@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Декамерон · Бокачо · Божидар Тодоров · VIII клас</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #dcd0ba;  /* стара хартия / пергамент */
+            background-image: radial-gradient(circle at 25% 40%, rgba(180, 150, 110, 0.1) 2%, transparent 2.5%),
+                              radial-gradient(circle at 70% 85%, rgba(120, 85, 55, 0.08) 1.8%, transparent 2%);
+            background-size: 45px 45px, 38px 38px;
+            font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+            min-height: 100vh;
+            padding: 30px 28px 40px;
+            color: #2c2418;
+        }
+
+        /* основен контейнер с флорентински нюанс */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(245, 235, 215, 0.55);
+            backdrop-filter: blur(1px);
+            border-radius: 56px 56px 48px 48px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,250,210,0.6);
+            padding: 16px 22px 28px;
+            border: 1px solid #c2aa7a;
+        }
+
+        /* хедър – възрожденски/манускриптен */
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #b48b5a;
+            border-top: 2px solid #b48b5a;
+            margin-bottom: 28px;
+            padding: 28px 12px 20px;
+            background: rgba(50, 32, 20, 0.08);
+            border-radius: 60px 60px 32px 32px;
+            letter-spacing: 1px;
+        }
+
+        .header h1 {
+            font-size: clamp(26px, 7vw, 48px);
+            font-weight: 600;
+            color: #3e2a1f;
+            text-shadow: 2px 2px 0 rgba(180, 140, 90, 0.25);
+            font-family: 'Cinzel', 'Cormorant Garamond', serif;
+        }
+
+        .header h1 span {
+            font-style: italic;
+            color: #8b5a2b;
+            font-weight: 500;
+        }
+
+        .author {
+            font-size: 1.5rem;
+            margin-top: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: #5a3e28;
+            border-top: 1px dashed #b88d5a;
+            display: inline-block;
+            padding-top: 10px;
+            padding-left: 28px;
+            padding-right: 28px;
+        }
+
+        /* прогресс барът – КРЕПОСТЕН СТИЛ (камък, зъбери) */
+        .fortress-progress {
+            width: 100%;
+            max-width: 860px;
+            margin: 10px auto 20px auto;
+            position: relative;
+            background: #5b4a36;
+            background-image: repeating-linear-gradient(45deg, #4a3926 0px, #4a3926 2px, #6f5a42 2px, #6f5a42 8px);
+            border-radius: 28px;
+            height: 42px;
+            box-shadow: inset 0 0 0 3px #e7dbbc, 0 10px 18px rgba(0,0,0,0.3);
+            border: 1px solid #2c2418;
+            overflow: hidden;
+            padding: 4px 6px;
+        }
+
+        .progress-fortress-fill {
+            height: 100%;
+            background: #b48b4c;
+            background: linear-gradient(135deg, #cfaa6e, #a77c42, #8f622e);
+            width: 7.69%; /* 1/13 ~7.69% за първоначално */
+            border-radius: 24px;
+            transition: width 0.3s ease-out;
+            box-shadow: inset 0 2px 5px rgba(255,215,140,0.7), 0 0 0 2px #e9ce97;
+            position: relative;
+        }
+
+        /* декоративни зъбери отгоре/отдолу (крепостен ефект) */
+        .fortress-progress::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            right: 8px;
+            height: 14px;
+            background: repeating-linear-gradient(90deg, #ad8b58 0px, #ad8b58 18px, #dabb8a 18px, #dabb8a 36px);
+            border-radius: 12px 12px 0 0;
+            z-index: 2;
+            filter: drop-shadow(0 1px 1px #261e12);
+        }
+
+        .fortress-progress::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 12px;
+            right: 12px;
+            height: 10px;
+            background: repeating-linear-gradient(90deg, #785e3a 0px, #785e3a 20px, #9f7a48 20px, #9f7a48 40px);
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* viewer wrapper – античен свитък */
+        .viewer-wrapper {
+            background: #efe2cf;
+            border-radius: 64px;
+            padding: 20px;
+            margin: 20px 0 20px;
+            box-shadow: inset 0 0 0 1px #fff6e5, 0 20px 35px -12px #3e2e1c;
+            border: 1px solid #bda170;
+            position: relative;
+        }
+
+        .viewer-inner {
+            background: #221d12;
+            border-radius: 48px;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #f2e2c6;
+        }
+
+        #mainImage {
+            max-width: 100%;
+            max-height: 68vh;
+            border-radius: 40px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+            background: #cfbc9a;
+            transition: all 0.2s;
+            object-fit: contain;
+        }
+
+        /* СТРЕЛКИ – вдъхновени от готически/манускрипт орнаменти */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 50px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #dfcbaa;
+            backdrop-filter: blur(4px);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 400;
+            box-shadow: 0 6px 14px #2d2417;
+            border: 2px solid #c9ad7c;
+            color: #4d331b;
+            font-family: 'Cinzel', serif;
+            z-index: 15;
+        }
+
+        .arrow:hover {
+            background: #f9e6c2;
+            transform: translateY(-50%) scale(1.08);
+            border-color: #b57632;
+            color: #2c1a0c;
+            box-shadow: 0 12px 20px #291f12;
+        }
+
+        #leftArrow {
+            left: -10px;
+        }
+        #rightArrow {
+            right: -10px;
+        }
+
+        /* панорами от бутони – медени, като стари миниатюри */
+        .thumbs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            padding: 16px 10px;
+            background: #ccb78b6b;
+            border-radius: 80px;
+            border: 1px solid #dbbc91;
+        }
+
+        .thumbs button {
+            background: #2f2419;
+            border: 2px solid #c7a15e;
+            color: #ffefcf;
+            min-width: 48px;
+            height: 48px;
+            border-radius: 28px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: 0.15s linear;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 1px;
+            backdrop-filter: blur(6px);
+            padding: 0 12px;
+        }
+
+        .thumbs button:hover {
+            background: #7a582e;
+            color: #fff0da;
+            transform: translateY(-3px);
+            border-color: #f3dba6;
+        }
+
+        .thumbs button.active-thumb {
+            background: #ca9f5c;
+            border-color: #fbecc2;
+            color: #2c1a0a;
+            box-shadow: 0 0 0 3px #f4dfa9;
+            font-weight: bold;
+        }
+
+        /* футер – текст, подобен на колофон */
+        .info-footer {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 1.05rem;
+            font-style: italic;
+            color: #5b432a;
+            border-top: 1px solid #c2a06e;
+            padding-top: 20px;
+            letter-spacing: 0.8px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .info-footer i {
+            font-weight: 500;
+            font-family: monospace;
+        }
+
+        @media (max-width: 680px) {
+            body { padding: 14px; }
+            .arrow { width: 50px; height: 50px; font-size: 40px; }
+            #leftArrow { left: -5px; }
+            #rightArrow { right: -5px; }
+            .thumbs button { min-width: 40px; height: 40px; font-size: 1rem; }
+            .fortress-progress { height: 36px; }
+        }
+    </style>
+    <!-- антикварни шрифтове: Cinzel за заглавие, Garamond за тяло -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📖 ДЕКАМЕРОН · <span>Джовани Бокачо</span></h1>
+        <div class="author">Божидар Тодоров · VIII клас · разказите на градината</div>
+        <div style="font-size:0.85rem; margin-top: 12px; opacity:0.8;">✻ убежище от чумата · разкази за човешката изобретателност ✻</div>
+    </div>
+
+    <!-- КРЕПОСТЕН ПРОГРЕС БАР (Декамерон със средновековна крепостна естетика) -->
+    <div class="fortress-progress">
+        <div class="progress-fortress-fill" id="progressFill" style="width: 7.69%"></div>
+    </div>
+
+    <div class="viewer-wrapper">
+        <span class="arrow" id="leftArrow" onclick="prevImage()">◀</span>
+        <div class="viewer-inner">
+            <img id="mainImage" src="Д1.jpg" alt="Илюстрация от Декамерон">
+        </div>
+        <span class="arrow" id="rightArrow" onclick="nextImage()">▶</span>
+    </div>
+
+    <div class="thumbs" id="thumbContainer">
+        <!-- динамични бутони от Д1 до Д13 -->
+    </div>
+
+    <div class="info-footer">
+        <span>✻ десет разказвачи · сто новели ✻</span>
+        <span>🏰 Вила Палацо · градината на веселата компания 🏰</span>
+        <i>„Човешкият ум е по-силен от всяка съдба“ — Decameron</i>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // --- Параметри: 13 изображения, именовани Д1.jpg .. Д13.jpg ---
+        const TOTAL_IMAGES = 13;
+        const BASE_NAME = "Д";                 // главно "Д" както поиска: Д1, Д2 ... Д13
+        let currentIdx = 1;                   // текущ номер 1..13
+        
+        const mainImage = document.getElementById("mainImage");
+        const progressFill = document.getElementById("progressFill");
+        let thumbButtons = [];
+        
+        // функция актуализира главното изображение, прогреса и активен бутон
+        function updateDisplay() {
+            // зареждане на Д№.jpg
+            mainImage.src = `${BASE_NAME}${currentIdx}.jpg`;
+            mainImage.alt = `Сцена от Декамерон – илюстрация ${currentIdx}`;
+            
+            // прогрес лента в проценти
+            const percent = (currentIdx / TOTAL_IMAGES) * 100;
+            progressFill.style.width = `${percent}%`;
+            
+            // маркиране на активен бутон в галерията (1-13)
+            thumbButtons.forEach((btn, idx) => {
+                const imgNumber = idx + 1;
+                if (imgNumber === currentIdx) {
+                    btn.classList.add('active-thumb');
+                } else {
+                    btn.classList.remove('active-thumb');
+                }
+            });
+        }
+        
+        // навигация напред / назад
+        window.nextImage = function() {
+            currentIdx = currentIdx === TOTAL_IMAGES ? 1 : currentIdx + 1;
+            updateDisplay();
+        };
+        
+        window.prevImage = function() {
+            currentIdx = currentIdx === 1 ? TOTAL_IMAGES : currentIdx - 1;
+            updateDisplay();
+        };
+        
+        // зареждане на конкретен номер
+        window.loadImage = function(num) {
+            if (num >= 1 && num <= TOTAL_IMAGES) {
+                currentIdx = num;
+                updateDisplay();
+            }
+        };
+        
+        // генериране на бутони от Д1 до Д13 върху thumb контейнера
+        const container = document.getElementById("thumbContainer");
+        if (container) {
+            container.innerHTML = "";
+            for (let i = 1; i <= TOTAL_IMAGES; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;    // показва номера 1,2,3...13
+                btn.setAttribute("aria-label", `Илюстрация Декамерон ${i}`);
+                btn.onclick = (function(num) {
+                    return function() { loadImage(num); };
+                })(i);
+                container.appendChild(btn);
+                thumbButtons.push(btn);
+            }
+        }
+        
+        // инициализация: първи кадър Д1.jpg и активен бутон, прогрес (1/13 = 7.69%)
+        updateDisplay();
+        
+        // клавиатурни стрелки за по-лесна навигация (както в предишен вариант, но с Декамерон стил)
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextImage();
+            }
+        });
+    })();
+</script>
+</body>
+  </html>
